@@ -12,9 +12,10 @@ const MapContainer = styled.div`
 class ResortMap extends React.Component {
 
     state = {
-        lat: 51.505,
-        lng: -0.09,
-        zoom: 13,
+        lat: 43,
+        lng: -100.09,
+        zoom: 5
+        ,
       }
 
     render() {

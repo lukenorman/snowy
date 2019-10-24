@@ -22,11 +22,11 @@ export const NM = 'New Mexico'
 //resorts
 export const Resorts = Object.freeze([
     //Epic Partners
-    {name: 'Kimberley', pass: EPIC, subpass: RCR, region: CANADA, days: 7},
-    {name: 'Fernie', pass: EPIC, subpass: RCR, region: CANADA, days: 7},
-    {name: 'Kicking Horse', pass: EPIC, subpass: RCR, region: CANADA, days: 7},
+    {name: 'Kimberley', pass: EPIC, subpass: RCR, region: CANADA, days: 7, location:[49.6707,-115.978]},
+    {name: 'Fernie', pass: EPIC, subpass: RCR, region: CANADA, days: 7, location: [49.5041747, -115.062867]},
+    {name: 'Kicking Horse', pass: EPIC, subpass: RCR, region: CANADA, days: 7, locaiton: [51.2982, -117.05]},
     {name: 'Nakiska', pass: EPIC, subpass: RCR, region: CANADA, days: 7},
-    {name: 'Sun Valley', pass: EPIC, subpass: SUNSNOW, region: IDAGO, days: 7},
+    {name: 'Sun Valley', pass: EPIC, subpass: SUNSNOW, region: IDAGO, days: 7, location:[43.6962,-114.353]},
     {name: 'Snowbasin', pass: EPIC, subpass: SUNSNOW, region: UTAH, days: 7},
     {name: 'Telluride', pass: EPIC, region: ROCKIES, days: 7},
     //Epic
