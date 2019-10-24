@@ -5,6 +5,7 @@ export const EPIC = "Epic"
 //partners
 export const RCR = 'RCR'
 export const SUNSNOW='Sun Valley/Snowbasin'
+export const BIG3 = 'BIG3'
 
 //regions
 export const ROCKIES = 'Rockies'
@@ -13,7 +14,7 @@ export const IDAGO = 'Idaho'
 export const UTAH = 'Utah'
 export const TAHOE = 'Tahoe'
 export const WA = 'Washington'
-export const MAMMTOH = 'Mammoth'
+export const MAMMOTH = 'Mammoth'
 export const WY = "Wyoming"
 export const MT = 'Montana'
 export const NM = 'New Mexico'
@@ -29,7 +30,7 @@ export const Resorts = Object.freeze([
     {name: 'Snowbasin', pass: EPIC, subpass: SUNSNOW, region: UTAH, days: 7},
     {name: 'Telluride', pass: EPIC, region: ROCKIES, days: 7},
     //Epic
-    {name: 'Vail', pass: EPIC, region: ROCKIES, days: 0},
+    {name: 'Vail', pass: EPIC, region: ROCKIES, days: 0, location: [39.6391, -106.3738]},
     {name: 'Whistler Blackcomb', pass: EPIC, region: CANADA, days: 0},
     {name: 'Keystone', pass: EPIC, region: ROCKIES, days: 0},
     {name: 'Crested Butte', pass: EPIC, region: ROCKIES, days: 0},
@@ -47,9 +48,9 @@ export const Resorts = Object.freeze([
     {name: 'Big Sky', pass: IKON, region: MT, days: 5},
     {name: 'Summit at Snoqualmie', pass: IKON, region: WA, days: 5},
     {name: 'Revelstoke', pass: IKON, region: CANADA, days: 5},
-    {name: 'Sunshine', pass: IKON, subpass: Bregion: CANADA, days: 5},
-    {name: 'Lake Louise', pass: IKON, region: CANADA, days: 5},
-    {name: 'Norquay', pass: IKON, region: CANADA, days: 5},
+    {name: 'Sunshine', pass: IKON, subpass: BIG3, region: CANADA, days: 5},
+    {name: 'Lake Louise', pass: IKON, subpass: BIG3, region: CANADA, days: 5},
+    {name: 'Norquay', pass: IKON, subpass: BIG3, region: CANADA, days: 5},
     {name: 'Cypress', pass: IKON, region: CANADA, days: 5},
     {name: 'Taos', pass: IKON, region: NM, days: 5},
     {name: 'Deer Valley', pass: IKON, region: UTAH, days: 5},
