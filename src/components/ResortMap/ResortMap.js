@@ -1,8 +1,10 @@
 import React from 'react'
-import { Map, TileLayer, Marker, Popup } from "react-leaflet"
+import { Map, Marker, TileLayer, Popup, LayersControl} from "react-leaflet"
 import styled from "styled-components";
 import { Resorts } from "../../constants/resorts"
-import L from 'leaflet';
+import L from 'leaflet'
+import "leaflet-openweathermap"
+const { Overlay } = LayersControl
 
 const MapContainer = styled.div`
   padding: 20px;
@@ -82,18 +84,29 @@ const getIcon = resort => {
     return (
     <MapContainer>
         <Map center={position} zoom={this.state.zoom} style={{height:'600px'}}>
-            <TileLayer
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-        {Resorts.map(resort => resort.location ? 
-            <Marker icon={getIcon(resort)} position={resort.location}>
-          <Popup>
-            <PopUpHeader>{resort.name}</PopUpHeader>
-            <PopUpText><Bold>{`Days Remaining:`}</Bold> {this.daysRemaining(resort) === -1 ? 'Unlimited' : this.daysRemaining(resort)}</PopUpText>
-            <PopUpText><Bold>{`Pass:`}</Bold> {resort.pass}</PopUpText>
-          </Popup>
-        </Marker> : null)}
+            <LayersControl position="topright">
+                    <TileLayer name="Ski Resort Map"
+                        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <Overlay name="Precip">
+                        <TileLayer url="https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=2be52163db534c3e9c804925d9b35213" />
+                    </Overlay>
+                    <Overlay name="Temps">
+                        <TileLayer url="https://tile.openweathermap.org/map/temp/{z}/{x}/{y}.png?appid=2be52163db534c3e9c804925d9b35213" />
+                    </Overlay>
+                    <Overlay name="Snow">
+                        <TileLayer url="https://tile.openweathermap.org/map/snow/{z}/{x}/{y}.png?appid=2be52163db534c3e9c804925d9b35213" />
+                    </Overlay>
+            </LayersControl>
+            {Resorts.map(resort => resort.location ? 
+                <Marker icon={getIcon(resort)} position={resort.location} key={resort.name}>
+            <Popup>
+                <PopUpHeader>{resort.name}</PopUpHeader>
+                <PopUpText><Bold>{`Days Remaining:`}</Bold> {this.daysRemaining(resort) === -1 ? 'Unlimited' : this.daysRemaining(resort)}</PopUpText>
+                <PopUpText><Bold>{`Pass:`}</Bold> {resort.pass}</PopUpText>
+            </Popup>
+            </Marker> : null)}
         </Map>
     </MapContainer>)
     }
