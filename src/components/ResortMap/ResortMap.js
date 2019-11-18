@@ -34,53 +34,59 @@ class ResortMap extends React.Component {
         lat: 43,
         lng: -100.09,
         zoom: 5,
+        location: null,
       }
 
     daysRemaining = resort => resort.days
 
-    render() {
-    const position = [this.state.lat, this.state.lng]
-
-    const green = '#4AC948'
-    const orange = ''
-    const red = '#FA8072'
-    const realRed = '#FC1501'
-
-
-
-    const markerHtmlStyles = (color) => `
-        background-color: ${color};
-        width: 20px;
-        height: 20px;
-        display: block;
-        left: -10px;
-        top: -10px;
-        position: relative;
-        border-radius: 20px 20px 0;
-        transform: rotate(45deg);
-        border: 1px solid #000000;
-    `
-
-const getIcon = resort => {
-    let daysRemaining = this.daysRemaining(resort)
-    let color = green
-    if (daysRemaining === -1 || daysRemaining >= 5) {
-        //do nothing
-    } else if (daysRemaining > 2) {
-        color = orange
-    } else if (daysRemaining === 2) {
-        color = red
-    } else if (daysRemaining === 1) {
-        color = realRed
+    componentDidMount() { 
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                this.setState({location: position})
+            })
+        }
     }
-    return L.divIcon({
-        className: "my-custom-pin",
-        iconAnchor: [0, 10],
-        labelAnchor: [0, 10],
-        popupAnchor: [0, 10],
-        html: `<span style="${markerHtmlStyles(color)}" />`
-    })
-}
+
+    render() {
+        const position = [this.state.lat, this.state.lng]
+        const green = '#4AC948'
+        const orange = ''
+        const red = '#FA8072'
+        const realRed = '#FC1501'
+
+        const markerHtmlStyles = (color) => `
+            background-color: ${color};
+            width: 20px;
+            height: 20px;
+            display: block;
+            left: -10px;
+            top: -10px;
+            position: relative;
+            border-radius: 20px 20px 0;
+            transform: rotate(45deg);
+            border: 1px solid #000000;
+        `
+
+        const getIcon = resort => {
+            let daysRemaining = this.daysRemaining(resort)
+            let color = green
+            if (daysRemaining === -1 || daysRemaining >= 5) {
+                //do nothing
+            } else if (daysRemaining > 2) {
+                color = orange
+            } else if (daysRemaining === 2) {
+                color = red
+            } else if (daysRemaining === 1) {
+                color = realRed
+            }
+            return L.divIcon({
+                className: "my-custom-pin",
+                iconAnchor: [0, 10],
+                labelAnchor: [0, 10],
+                popupAnchor: [0, 10],
+                html: `<span style="${markerHtmlStyles(color)}" />`
+            })
+        }
     return (
     <MapContainer>
         <Map center={position} zoom={this.state.zoom} style={{height:'600px'}}>
@@ -107,6 +113,7 @@ const getIcon = resort => {
                 <PopUpText><Bold>{`Pass:`}</Bold> {resort.pass}</PopUpText>
             </Popup>
             </Marker> : null)}
+            {(this.state.location !== null) ? <Marker position={[this.state.location.coords.latitude,this.state.location.coords.longitude]} /> : null }
         </Map>
     </MapContainer>)
     }
