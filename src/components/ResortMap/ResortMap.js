@@ -2,6 +2,8 @@ import React from 'react'
 import { Map, Marker, TileLayer, Popup, LayersControl} from "react-leaflet"
 import styled from "styled-components";
 import { Resorts } from "../../constants/resorts"
+import { Days } from "../../constants/days"
+import { Distance } from "./Distance"
 import L from 'leaflet'
 import "leaflet-openweathermap"
 const { Overlay } = LayersControl
@@ -37,7 +39,23 @@ class ResortMap extends React.Component {
         location: null,
       }
 
-    daysRemaining = resort => resort.days
+    daysRemaining = resort => {
+        const initialDays = resort.days
+        let remainingDays = (initialDays === -1) ? initialDays : initialDays - this.daysSkied(resort)
+        if (resort.subpass) {
+            const subpassResorts = Resorts.filter(r => (r.subpass === resort.subpass) && (r.name !== resort.name))
+            for (let subpassResort of subpassResorts) {
+                let subpassDaysUsed = Days.filter(day => day.resort === subpassResort.name)
+                remainingDays -= subpassDaysUsed.length
+            }
+        }
+        return remainingDays
+    }
+
+    daysSkied = resort => {
+        let daysUsed = Days.filter(day => day.resort === resort.name)
+        return daysUsed.length
+    }
 
     componentDidMount() { 
         if (navigator.geolocation) {
@@ -50,7 +68,7 @@ class ResortMap extends React.Component {
     render() {
         const position = [this.state.lat, this.state.lng]
         const green = '#4AC948'
-        const orange = ''
+        const orange = '#FFA500'
         const red = '#FA8072'
         const realRed = '#FC1501'
 
@@ -79,6 +97,7 @@ class ResortMap extends React.Component {
             } else if (daysRemaining === 1) {
                 color = realRed
             }
+            
             return L.divIcon({
                 className: "my-custom-pin",
                 iconAnchor: [0, 10],
@@ -111,6 +130,8 @@ class ResortMap extends React.Component {
                 <PopUpHeader>{resort.name}</PopUpHeader>
                 <PopUpText><Bold>{`Days Remaining:`}</Bold> {this.daysRemaining(resort) === -1 ? 'Unlimited' : this.daysRemaining(resort)}</PopUpText>
                 <PopUpText><Bold>{`Pass:`}</Bold> {resort.pass}</PopUpText>
+                <PopUpText><Bold>{`Days Skied:`}</Bold> {this.daysSkied(resort)}</PopUpText>
+                <PopUpText><Bold>{`Distance:`}</Bold> <Distance resort={resort} location={this.state.location}/></PopUpText>
             </Popup>
             </Marker> : null)}
             {(this.state.location !== null) ? <Marker position={[this.state.location.coords.latitude,this.state.location.coords.longitude]} /> : null }

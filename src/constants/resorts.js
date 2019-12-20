@@ -5,7 +5,6 @@ export const INDY = "Indy"
 
 //partners
 export const RCR = 'RCR'
-export const SUNSNOW='Sun Valley/Snowbasin'
 export const BIG3 = 'BIG3'
 
 //regions
@@ -30,8 +29,8 @@ export const Resorts = Object.freeze([
     {name: 'Fernie', pass: EPIC, subpass: RCR, region: CANADA, days: 7, location: [49.5041747, -115.062867]},
     {name: 'Kicking Horse', pass: EPIC, subpass: RCR, region: CANADA, days: 7, location: [51.2982, -117.05]},
     {name: 'Nakiska', pass: EPIC, subpass: RCR, region: CANADA, days: 7, location: [50.942758, -115.151088]},
-    {name: 'Sun Valley', pass: EPIC, subpass: SUNSNOW, region: IDAHO, days: 7, location: [43.6962,-114.353]},
-    {name: 'Snowbasin', pass: EPIC, subpass: SUNSNOW, region: UTAH, days: 7, location: [41.216166, -111.856865]},
+    {name: 'Sun Valley', pass: EPIC, region: IDAHO, days: 7, location: [43.6962,-114.353]},
+    {name: 'Snowbasin', pass: EPIC, region: UTAH, days: 7, location: [41.216166, -111.856865]},
     {name: 'Telluride', pass: EPIC, region: ROCKIES, days: 7, location: [37.937672, -107.813533]},
     //Epic
     {name: 'Vail', pass: EPIC, region: ROCKIES, days: -1, location: [39.6391, -106.3738]},
@@ -43,6 +42,7 @@ export const Resorts = Object.freeze([
     {name: 'Park City', pass: EPIC, region: UTAH, days: -1, location: [40.647216, -111.498614]},
     {name: 'Heavenly', pass: EPIC, region: TAHOE, days: -1, location: [38.961266, -119.885523]},
     {name: 'Kirkwood', pass: EPIC, region: TAHOE, days: -1, location: [38.683143, -120.067398]},
+    {name: 'Northstar', pass: EPIC, region: TAHOE, days:-1, location:[39.2733, -120.1025]},
     {name: 'Stevens Pass', pass: EPIC, region: WA, days: -1, location: [47.744774, -121.090297]},
     //Ikon Partners
     {name: 'Aspen', pass: IKON, region: ROCKIES, days: 5, location: [39.184842, -106.821359]},
@@ -68,7 +68,7 @@ export const Resorts = Object.freeze([
     {name: 'Alpine Meadows', pass: IKON, region: TAHOE, days: -1, location: [39.164592, -120.237775]},
     {name: 'Mammoth Mountain', pass: IKON, region: MAMMOTH, days: -1, location: [37.650803, -119.036925]}, 
     {name: 'June Mountain', pass: IKON, region: MAMMOTH, days: -1, location: [37.768032, -119.090443]},  
-    {name: 'Big Bear Mountain', pass: IKON, region: BIGBEAR, days: -1, location: [34.236426, -116.889289]}, 
+    {name: 'Bear Mountain', pass: IKON, region: BIGBEAR, days: -1, location: [34.236426, -116.889289]}, 
     {name: 'Crystal Mountain', pass: IKON, region: WA, days: -1, location: [46.935692, -121.474832]}, 
     {name: 'Solitude', pass: IKON, region: UTAH, days: -1, location: [40.620354, -111.593772]},
     //Indy Pass
