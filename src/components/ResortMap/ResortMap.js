@@ -57,11 +57,35 @@ class ResortMap extends React.Component {
         return daysUsed.length
     }
 
+    updateLocation = e => {
+        const latLng = e.target.getLatLng()
+        console.log(latLng)
+        let coords = {'latitude': latLng.lat, 'longitude': latLng.lng}
+        this.setState({location: coords})
+    }
+
+    generatePopUp = resort => {
+        return <Popup>
+            <PopUpHeader>{resort.name}</PopUpHeader>
+            <PopUpText><Bold>{`Days Remaining:`}</Bold> {this.daysRemaining(resort) === -1 ? 'Unlimited' : this.daysRemaining(resort)}</PopUpText>
+            <PopUpText><Bold>{`Pass:`}</Bold> {resort.pass}</PopUpText>
+            <PopUpText><Bold>{`Days Skied:`}</Bold> {this.daysSkied(resort)}</PopUpText>
+            <PopUpText><Bold>{`Distance:`}</Bold> <Distance resort={resort} location={this.state.location}/></PopUpText>
+        </Popup>
+    }
+
     componentDidMount() { 
+        console.log("Setting up location")
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
-                this.setState({location: position})
+                console.log(`Updating location`)
+                this.setState({location: position.coords})
+            }, 
+            error => {
+                console.log(error)
             })
+        } else {
+            console.log("Location sensing not enabled")
         }
     }
 
@@ -126,15 +150,9 @@ class ResortMap extends React.Component {
             </LayersControl>
             {Resorts.map(resort => resort.location ? 
                 <Marker icon={getIcon(resort)} position={resort.location} key={resort.name}>
-            <Popup>
-                <PopUpHeader>{resort.name}</PopUpHeader>
-                <PopUpText><Bold>{`Days Remaining:`}</Bold> {this.daysRemaining(resort) === -1 ? 'Unlimited' : this.daysRemaining(resort)}</PopUpText>
-                <PopUpText><Bold>{`Pass:`}</Bold> {resort.pass}</PopUpText>
-                <PopUpText><Bold>{`Days Skied:`}</Bold> {this.daysSkied(resort)}</PopUpText>
-                <PopUpText><Bold>{`Distance:`}</Bold> <Distance resort={resort} location={this.state.location}/></PopUpText>
-            </Popup>
+            {this.generatePopUp(resort)}
             </Marker> : null)}
-            {(this.state.location !== null) ? <Marker position={[this.state.location.coords.latitude,this.state.location.coords.longitude]} /> : null }
+            {(this.state.location !== null) ? <Marker draggable={true} onDragend={this.updateLocation} position={[this.state.location.latitude,this.state.location.longitude]} /> : null }
         </Map>
     </MapContainer>)
     }

@@ -16,39 +16,55 @@ export class Distance extends React.Component {
         if (minutes < 10) {minutes = "0"+minutes;}
         if (seconds < 10) {seconds = "0"+seconds;}
         return hours+':'+minutes+':'+seconds;
-}
-    componentDidMount() {
+    }
+
+    updateDistance() {
         let me = this;
         let data = {locations: []};
-        try {
-            data.locations.push([this.props.resort.location[1], this.props.resort.location[0]])
-            data.locations.push([this.props.location.coords.longitude, this.props.location.coords.latitude])
-        } catch (ex) {
-            console.log(ex);
+        this.setState({location: this.props.location}) 
+        if (this.props.location) {
+            try {
+                data.locations.push([this.props.resort.location[1], this.props.resort.location[0]])
+                data.locations.push([this.props.location.longitude, this.props.location.latitude])
+            } catch (ex) {
+                console.log(ex);
+            }
+            if (data.locations.length > 0) {
+                fetch('https://api.openrouteservice.org/v2/matrix/driving-car', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': '5b3ce3597851110001cf6248bcddf07a9ac049d9ba24520e867a8819'
+                    },
+                    body: JSON.stringify(data)
+                  }).then(function(response) {
+                    return response.json();
+                  }).then(function(json) {
+                      console.log(json)
+                      if (json.durations && json.durations[0][1]) {
+                        me.setState({text: me.secondsToTime(json.durations[0][1])})
+                      } else {
+                        
+                      }
+                  });
+            }
+        } else {
+            this.setState({text: "Unknown"})
         }
-        if (data.locations.length > 0) {
-            fetch('https://api.openrouteservice.org/v2/matrix/driving-car', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': '5b3ce3597851110001cf6248bcddf07a9ac049d9ba24520e867a8819'
-                },
-                body: JSON.stringify(data)
-              }).then(function(response) {
-                return response.json();
-              }).then(function(json) {
-                  console.log(json)
-                  if (json.durations[0][1]) {
-                    me.setState({text: me.secondsToTime(json.durations[0][1])})
-                  } else {
-                    me.setState({text: "???"})
-                  }
-              });
+    }
+
+    componentDidUpdate() {
+        if (this.props.location !== this.state.location) {
+            this.updateDistance();
         }
 
     }
 
+    componentDidMount() {
+        this.updateDistance();
+    }
+
     render() {
-        return <h2>{this.state.text}</h2>;
+        return this.state.text;
     }
 }
