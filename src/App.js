@@ -1,10 +1,7 @@
 import React from 'react';
-
 import { BrowserRouter as Router, Route } from "react-router-dom";
-
 import MainApp from "./components/MainApp";
 import config from "./config";
-
 
 function App() {
     return (
@@ -14,7 +11,5 @@ function App() {
       </Router>
     );
 }
-
-
 
 export default App;
