@@ -1,12 +1,17 @@
-import React from "react";
+import { useState, useEffect }  from "react";
 
-export class Distance extends React.Component {
-    constructor() {
-        super();
-        this.state = { text: "Calculating..." };
-    }
+function Distance({resort,location}) {
+    const [text, setText] = useState("Calculating...")
+    const [stateLocation, setLocation] = useState(null)
 
-    secondsToTime = secs  => {
+
+    useEffect(() => {
+        if (location !== stateLocation) {
+            updateDistance();
+        }
+    });
+
+    const secondsToTime = secs  => {
         var sec_num = parseInt(secs, 10); // don't forget the second param
         var hours   = Math.floor(sec_num / 3600);
         var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
@@ -18,14 +23,13 @@ export class Distance extends React.Component {
         return hours+':'+minutes+':'+seconds;
     }
 
-    updateDistance() {
-        let me = this;
+    const updateDistance = () => {
         let data = {locations: []};
-        this.setState({location: this.props.location}) 
-        if (this.props.location) {
+        setLocation(location) 
+        if (location) {
             try {
-                data.locations.push([this.props.resort.location[1], this.props.resort.location[0]])
-                data.locations.push([this.props.location.longitude, this.props.location.latitude])
+                data.locations.push([resort.location[1], resort.location[0]])
+                data.locations.push([location.longitude, location.latitude])
             } catch (ex) {
                 console.log(ex);
             }
@@ -42,29 +46,18 @@ export class Distance extends React.Component {
                   }).then(function(json) {
                       console.log(json)
                       if (json.durations && json.durations[0][1]) {
-                        me.setState({text: me.secondsToTime(json.durations[0][1])})
+                        setText(secondsToTime(json.durations[0][1]))
                       } else {
-                        
+                        setText("Unknown")
                       }
                   });
             }
         } else {
-            this.setState({text: "Unknown"})
+            setText("Unknown")
         }
     }
 
-    componentDidUpdate() {
-        if (this.props.location !== this.state.location) {
-            this.updateDistance();
-        }
-
-    }
-
-    componentDidMount() {
-        this.updateDistance();
-    }
-
-    render() {
-        return this.state.text;
-    }
+    return text;
 }
+
+export default Distance

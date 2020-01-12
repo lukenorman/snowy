@@ -3,7 +3,7 @@ import { Map, Marker, TileLayer, Popup, LayersControl} from "react-leaflet"
 import styled from "styled-components";
 import { Resorts } from "../../constants/resorts"
 import { Days } from "../../constants/days"
-import { Distance } from "./Distance"
+import Distance from "./Distance"
 import L from 'leaflet'
 import "leaflet-openweathermap"
 const { Overlay } = LayersControl
