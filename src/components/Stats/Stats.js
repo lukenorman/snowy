@@ -1,16 +1,13 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Resorts, EPIC, IKON } from "../../constants/resorts"
 import { Days } from "../../constants/days"
 
-class Stats extends React.Component {
+function Stats() {
 
+    const [epicDays, setEpicDays] = useState(0)
+    const [ikonDays, setIkonDays] = useState(0)
 
-    state = {
-        epicDays: 0,
-        ikonDays: 0
-      }
-
-    componentDidMount() { 
+    useEffect(() => {
         let epic = 0;
         let ikon = 0;
         for (let day of Days) {
@@ -24,18 +21,16 @@ class Stats extends React.Component {
                 }
             }
         }
-        this.setState({epicDays: epic})
-        this.setState({ikonDays: ikon})
-    }
+        setEpicDays(epic)
+        setIkonDays(ikon)
+    }, [setEpicDays, setIkonDays]);
 
-    render() {
-        return (<div>
-                    <h2>Stats</h2>
-                    <div>Total Days: {Days.length} </div>
-                    <div>Epic Days: {this.state.epicDays} </div>
-                    <div>Ikon Days: {this.state.ikonDays} </div>
-                </div>)
-    }
+    return (<div>
+                <h2>Stats</h2>
+                <div>Total Days: {Days.length} </div>
+                <div>Epic Days: {epicDays} </div>
+                <div>Ikon Days: {ikonDays} </div>
+            </div>)
 }
 
-export default Stats
+export default Stats;
