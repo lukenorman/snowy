@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Map, Marker, TileLayer, Popup, LayersControl} from "react-leaflet"
 import styled from "styled-components";
 import { Resorts } from "../../constants/resorts"
@@ -30,18 +30,43 @@ const PopUpHeader = styled.div`
     margin-bottom:10px;
 `;
 
-class ResortMap extends React.Component {
+function ResortMap() {
 
-    state = {
-        lat: 43,
-        lng: -100.09,
-        zoom: 5,
-        location: null,
-      }
+    const lat = 43
+    const lng = -100.09
+    const zoom = 5
+    const position = [lat, lng]
+    const green = '#4AC948'
+    const orange = '#FFA500'
+    const red = '#FA8072'
+    const realRed = '#FC1501'
 
-    daysRemaining = resort => {
+    const [location, setLocation] = useState(null)
+
+    useEffect(() => {
+        console.log("Setting up location")
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                console.log(`Updating location`)
+                setLocation(position.coords)
+            }, 
+            error => {
+                console.log(error)
+            },
+            {timeout: 10000})
+        } else {
+            console.log("Location sensing not enabled")
+        }
+    }, [setLocation])
+
+    const daysSkied = resort => {
+        let daysUsed = Days.filter(day => day.resort === resort.name)
+        return daysUsed.length
+    }
+
+    const daysRemaining = resort => {
         const initialDays = resort.days
-        let remainingDays = (initialDays === -1) ? initialDays : initialDays - this.daysSkied(resort)
+        let remainingDays = (initialDays === -1) ? initialDays : initialDays - daysSkied(resort)
         if (resort.subpass) {
             const subpassResorts = Resorts.filter(r => (r.subpass === resort.subpass) && (r.name !== resort.name))
             for (let subpassResort of subpassResorts) {
@@ -52,87 +77,59 @@ class ResortMap extends React.Component {
         return remainingDays
     }
 
-    daysSkied = resort => {
-        let daysUsed = Days.filter(day => day.resort === resort.name)
-        return daysUsed.length
-    }
-
-    updateLocation = e => {
+    const updateLocation = e => {
         const latLng = e.target.getLatLng()
-        console.log(latLng)
-        let coords = {'latitude': latLng.lat, 'longitude': latLng.lng}
-        this.setState({location: coords})
+        setLocation({'latitude': latLng.lat, 'longitude': latLng.lng})
     }
 
-    generatePopUp = resort => {
+    const generatePopUp = resort => {
         return <Popup>
             <PopUpHeader>{resort.name}</PopUpHeader>
-            <PopUpText><Bold>{`Days Remaining:`}</Bold> {this.daysRemaining(resort) === -1 ? 'Unlimited' : this.daysRemaining(resort)}</PopUpText>
+            <PopUpText><Bold>{`Days Remaining:`}</Bold> {daysRemaining(resort) === -1 ? 'Unlimited' : daysRemaining(resort)}</PopUpText>
             <PopUpText><Bold>{`Pass:`}</Bold> {resort.pass}</PopUpText>
-            <PopUpText><Bold>{`Days Skied:`}</Bold> {this.daysSkied(resort)}</PopUpText>
-            <PopUpText><Bold>{`Distance:`}</Bold> <Distance resort={resort} location={this.state.location}/></PopUpText>
+            <PopUpText><Bold>{`Days Skied:`}</Bold> {daysSkied(resort)}</PopUpText>
+            <PopUpText><Bold>{`Distance:`}</Bold> <Distance resort={resort} location={location}/></PopUpText>
         </Popup>
     }
 
-    componentDidMount() { 
-        console.log("Setting up location")
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                console.log(`Updating location`)
-                this.setState({location: position.coords})
-            }, 
-            error => {
-                console.log(error)
-            })
-        } else {
-            console.log("Location sensing not enabled")
+    const markerHtmlStyles = (color) => {return `
+        background-color: ${color};
+        width: 20px;
+        height: 20px;
+        display: block;
+        left: -10px;
+        top: -10px;
+        position: relative;
+        border-radius: 20px 20px 0;
+        transform: rotate(45deg);
+        border: 1px solid #000000;
+    `}
+
+    const getIcon = resort => {
+        let daysRemain = daysRemaining(resort)
+        let color = green
+        if (daysRemain === -1 || daysRemain >= 5) {
+            //do nothing
+        } else if (daysRemain > 2) {
+            color = orange
+        } else if (daysRemain === 2) {
+            color = red
+        } else if (daysRemain === 1) {
+            color = realRed
         }
-    }
+        
+        return L.divIcon({
+            className: "my-custom-pin",
+            iconAnchor: [0, 10],
+            labelAnchor: [0, 10],
+            popupAnchor: [0, 10],
+            html: `<span style="${markerHtmlStyles(color)}" />`
+        })
+    }     
 
-    render() {
-        const position = [this.state.lat, this.state.lng]
-        const green = '#4AC948'
-        const orange = '#FFA500'
-        const red = '#FA8072'
-        const realRed = '#FC1501'
-
-        const markerHtmlStyles = (color) => `
-            background-color: ${color};
-            width: 20px;
-            height: 20px;
-            display: block;
-            left: -10px;
-            top: -10px;
-            position: relative;
-            border-radius: 20px 20px 0;
-            transform: rotate(45deg);
-            border: 1px solid #000000;
-        `
-
-        const getIcon = resort => {
-            let daysRemaining = this.daysRemaining(resort)
-            let color = green
-            if (daysRemaining === -1 || daysRemaining >= 5) {
-                //do nothing
-            } else if (daysRemaining > 2) {
-                color = orange
-            } else if (daysRemaining === 2) {
-                color = red
-            } else if (daysRemaining === 1) {
-                color = realRed
-            }
-            
-            return L.divIcon({
-                className: "my-custom-pin",
-                iconAnchor: [0, 10],
-                labelAnchor: [0, 10],
-                popupAnchor: [0, 10],
-                html: `<span style="${markerHtmlStyles(color)}" />`
-            })
-        }
     return (
     <MapContainer>
-        <Map center={position} zoom={this.state.zoom} style={{height:'600px'}}>
+        <Map center={position} zoom={zoom} style={{height:'600px'}}>
             <LayersControl position="topright">
                     <TileLayer name="Ski Resort Map"
                         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -150,12 +147,11 @@ class ResortMap extends React.Component {
             </LayersControl>
             {Resorts.map(resort => resort.location ? 
                 <Marker icon={getIcon(resort)} position={resort.location} key={resort.name}>
-            {this.generatePopUp(resort)}
+            {generatePopUp(resort)}
             </Marker> : null)}
-            {(this.state.location !== null) ? <Marker draggable={true} onDragend={this.updateLocation} position={[this.state.location.latitude,this.state.location.longitude]} /> : null }
+            {(location !== null) ? <Marker draggable={true} onDragend={updateLocation} position={[location.latitude,location.longitude]} /> : null }
         </Map>
     </MapContainer>)
-    }
 }
 
 export default ResortMap
