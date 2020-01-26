@@ -81,6 +81,10 @@ function ResortMap() {
         const latLng = e.target.getLatLng()
         setLocation({'latitude': latLng.lat, 'longitude': latLng.lng})
     }
+    
+    const updateLocationToResort = resort => {
+        setLocation({'latitude': resort.location[0], 'longitude': resort.location[1]})
+    }
 
     const generatePopUp = resort => {
         return <Popup>
@@ -89,6 +93,7 @@ function ResortMap() {
             <PopUpText><Bold>{`Pass:`}</Bold> {resort.pass}</PopUpText>
             <PopUpText><Bold>{`Days Skied:`}</Bold> {daysSkied(resort)}</PopUpText>
             <PopUpText><Bold>{`Distance:`}</Bold> <Distance resort={resort} location={location}/></PopUpText>
+            <PopUpText onClick={() => updateLocationToResort(resort)}><Bold>Set location to this resort</Bold></PopUpText>
         </Popup>
     }
 

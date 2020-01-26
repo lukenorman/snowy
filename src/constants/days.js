@@ -45,6 +45,7 @@ export const Days = Object.freeze([
     {date: '2020/01/21', resort: 'White Pass Ski Area'},
     //40 days up to here
     {date: '2020/01/22', resort: 'White Pass Ski Area'},
+    {date: '2020/01/25', resort: 'Crystal Mountain'},
 
 
 ])
