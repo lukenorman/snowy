@@ -46,6 +46,10 @@ export const Days = Object.freeze([
     //40 days up to here
     {date: '2020/01/22', resort: 'White Pass Ski Area'},
     {date: '2020/01/25', resort: 'Crystal Mountain'},
-
-
+    {date: '2020/01/26', resort: 'Crystal Mountain'},
+    {date: '2020/01/27', resort: 'Crystal Mountain'},
+    {date: '2020/01/28', resort: 'Crystal Mountain'},
+    {date: '2020/01/30', resort: 'Whistler Blackcomb'},
+    {date: '2020/01/31', resort: 'Whistler Blackcomb'},
+    {date: '2020/02/02', resort: 'Whistler Blackcomb'},
 ])

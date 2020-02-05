@@ -87,12 +87,14 @@ function ResortMap() {
     }
 
     const generatePopUp = resort => {
+        let skiedDays = daysSkied(resort)
         return <Popup>
             <PopUpHeader>{resort.name}</PopUpHeader>
             <PopUpText><Bold>{`Days Remaining:`}</Bold> {daysRemaining(resort) === -1 ? 'Unlimited' : daysRemaining(resort)}</PopUpText>
             <PopUpText><Bold>{`Pass:`}</Bold> {resort.pass}</PopUpText>
-            <PopUpText><Bold>{`Days Skied:`}</Bold> {daysSkied(resort)}</PopUpText>
+            <PopUpText><Bold>{`Days Skied:`}</Bold> {skiedDays}</PopUpText>
             <PopUpText><Bold>{`Distance:`}</Bold> <Distance resort={resort} location={location}/></PopUpText>
+            <br />
             <PopUpText onClick={() => updateLocationToResort(resort)}><Bold>Set location to this resort</Bold></PopUpText>
         </Popup>
     }
@@ -122,13 +124,15 @@ function ResortMap() {
         } else if (daysRemain === 0) {
             color = realRed
         }
+
+        let virginResort = (daysSkied(resort) === 0)
         
         return L.divIcon({
             className: "my-custom-pin",
             iconAnchor: [0, 10],
             labelAnchor: [0, 10],
             popupAnchor: [0, 10],
-            html: `<span style="${markerHtmlStyles(color)}" />`
+            html: virginResort ? `<span style="${markerHtmlStyles(color)}">X</span>` : `<span style="${markerHtmlStyles(color)}" />`
         })
     }     
 
