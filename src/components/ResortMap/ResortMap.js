@@ -119,7 +119,7 @@ function ResortMap() {
             //do nothing
         } else if (daysRemain > 2) {
             color = orange
-        } else if (daysRemain === 2) {
+        } else if (daysRemain > 0) {
             color = red
         } else if (daysRemain === 0) {
             color = realRed
