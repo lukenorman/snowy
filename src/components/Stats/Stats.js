@@ -12,6 +12,7 @@ function Stats() {
     const [oneDay, setOneDay] = useState([])
     const [daysInARow, setDaysInARow] = useState(0)
     const [daysInARowStart, setDaysInARowStart] = useState(null)
+    const [mostRecentDate, setMostRecentDate] = useState("")
 
     const datesEqual = (date,startDate,days) => {
         let secondDate = new Date(startDate)
@@ -38,6 +39,10 @@ function Stats() {
         let maxConsecutiveStart = new Date(Days[0].date)
         let consecutiveDays = 0;
         let startDate = new Date(Days[0].date);
+        if (Days[Days.length-1] && Days[Days.length-1].date) {
+            let dateObject = new Date(Days[Days.length-1].date)
+            setMostRecentDate(dateObject.toDateString())
+        }
         for (let day of Days) {
             let date = new Date(day.date)
             if (datesEqual(date,startDate,consecutiveDays)) {
@@ -82,11 +87,11 @@ function Stats() {
         setOneDay(oneDayWonders)
         setDaysInARow(maxConsecutive)
         setDaysInARowStart(maxConsecutiveStart)
-    }, [setEpicDays, setIkonDays, setIndyDays, setResortsSkied, setMostDays, setOneDay, setDaysInARow, setDaysInARowStart]);
+    }, [setEpicDays, setIkonDays, setIndyDays, setResortsSkied, setMostDays, setOneDay, setDaysInARow, setDaysInARowStart, setMostRecentDate]);
 
     return (<div>
                 <h2>Stats</h2>
-                <div><b>Total Days:</b> {Days.length} </div>
+                <div><b>Total Days:</b> {Days.length} as of {mostRecentDate}</div>
                 <div><b>Epic Days:</b> {epicDays} </div>
                 <div><b>Ikon Days:</b> {ikonDays} </div>
                 <div><b>Indy Days:</b> {indyDays} </div>
