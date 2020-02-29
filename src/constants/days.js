@@ -64,4 +64,10 @@ export const Days = Object.freeze([
     {date: '2020/02/18', resort: 'Castle Mountain'},
     {date: '2020/02/20', resort: 'Silver Mountain'},
     {date: '2020/02/21', resort: 'Silver Mountain'},
+    {date: '2020/02/23', resort: 'Stevens Pass'},
+    //60 days up to here
+    {date: '2020/02/24', resort: 'Stevens Pass'},
+    {date: '2020/02/25', resort: 'Stevens Pass'},
+    {date: '2020/02/27', resort: 'Big Sky'},
+    {date: '2020/02/28', resort: 'Big Sky'},
 ])
