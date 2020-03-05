@@ -13,6 +13,7 @@ function Stats() {
     const [daysInARow, setDaysInARow] = useState(0)
     const [daysInARowStart, setDaysInARowStart] = useState(null)
     const [mostRecentDate, setMostRecentDate] = useState("")
+    const [regionCount, setRegionCount] = useState([])
 
     const datesEqual = (date,startDate,days) => {
         let secondDate = new Date(startDate)
@@ -39,6 +40,7 @@ function Stats() {
         let maxConsecutiveStart = new Date(Days[0].date)
         let consecutiveDays = 0;
         let startDate = new Date(Days[0].date);
+        let regions = [];
         if (Days[Days.length-1] && Days[Days.length-1].date) {
             let dateObject = new Date(Days[Days.length-1].date)
             setMostRecentDate(dateObject.toDateString())
@@ -78,6 +80,9 @@ function Stats() {
             if (days.length === 1) {
                 oneDayWonders.push(resort.name)
             }
+            if (!regions.includes(resort.region)) {
+                regions.push(resort.region)
+            }
         }
         setEpicDays(epic)
         setIkonDays(ikon)
@@ -87,7 +92,8 @@ function Stats() {
         setOneDay(oneDayWonders)
         setDaysInARow(maxConsecutive)
         setDaysInARowStart(maxConsecutiveStart)
-    }, [setEpicDays, setIkonDays, setIndyDays, setResortsSkied, setMostDays, setOneDay, setDaysInARow, setDaysInARowStart, setMostRecentDate]);
+        setRegionCount(regions)
+    }, [setEpicDays, setIkonDays, setIndyDays, setResortsSkied, setMostDays, setOneDay, setDaysInARow, setDaysInARowStart, setMostRecentDate, setRegionCount]);
 
     return (<div>
                 <h2>Stats</h2>
@@ -99,6 +105,7 @@ function Stats() {
                 <div><b>Most Days At One Resort:</b> {mostDays.length} @ {(mostDays[0] && mostDays[0].resort) || ""} </div>
                 <div><b>Most Days In A Row:</b> {daysInARow} starting @ {printDate(daysInARowStart)}</div>
                 <div><b>1 Day Wonders:</b> {oneDay.join(", ")} </div>
+                <div><b>States/Provinces Skied:</b>{regionCount.length}</div>
             </div>)
 }
 
