@@ -9,7 +9,7 @@ import "leaflet-openweathermap"
 const { Overlay } = LayersControl
 
 const MapContainer = styled.div`
-  padding: 20px;
+  padding: 10px 20px;
   width: 100%;
   box-sizing:border-box;
 `;

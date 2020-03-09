@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import styled from "styled-components";
-
 import { Resorts, EPIC, IKON, INDY } from "../../constants/resorts"
 import { Days } from "../../constants/days"
 
 const StatsContainer = styled.div`
-  padding: 20px;
+  padding: 10px 20px;
   width: 100%;
   box-sizing:border-box;
 `;
