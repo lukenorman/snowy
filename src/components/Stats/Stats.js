@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react'
+import styled from "styled-components";
+
 import { Resorts, EPIC, IKON, INDY } from "../../constants/resorts"
 import { Days } from "../../constants/days"
+
+const StatsContainer = styled.div`
+  padding: 20px;
+  width: 100%;
+  box-sizing:border-box;
+`;
 
 function Stats() {
 
@@ -95,8 +103,7 @@ function Stats() {
         setRegionCount(regions)
     }, [setEpicDays, setIkonDays, setIndyDays, setResortsSkied, setMostDays, setOneDay, setDaysInARow, setDaysInARowStart, setMostRecentDate, setRegionCount]);
 
-    return (<div>
-                <h2>Stats</h2>
+    return (<StatsContainer>
                 <div><b>Total Days:</b> {Days.length} as of {mostRecentDate}</div>
                 <div><b>Epic Days:</b> {epicDays} </div>
                 <div><b>Ikon Days:</b> {ikonDays} </div>
@@ -105,8 +112,8 @@ function Stats() {
                 <div><b>Most Days At One Resort:</b> {mostDays.length} @ {(mostDays[0] && mostDays[0].resort) || ""} </div>
                 <div><b>Most Days In A Row:</b> {daysInARow} starting @ {printDate(daysInARowStart)}</div>
                 <div><b>1 Day Wonders:</b> {oneDay.join(", ")} </div>
-                <div><b>States/Provinces Skied:</b>{regionCount.length}</div>
-            </div>)
+                <div><b>States/Provinces Skied:</b> {regionCount.length}</div>
+            </StatsContainer>)
 }
 
 export default Stats;
